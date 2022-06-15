@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using WinFormsEntityNET5_Learning.Views;
 
 namespace WinFormsEntityNET5_Learning
 {
@@ -20,19 +21,14 @@ namespace WinFormsEntityNET5_Learning
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             ConfigureServices();
-            Application.Run(ServiceProvider.GetService<PatientsForm>());
+            Application.Run(ServiceProvider.GetService<PatientsBrowser>());
         }
         public static IServiceProvider ServiceProvider { get; private set; }
-        static IHostBuilder CreateHostBuilder()
-        {
-            var host = Host.CreateDefaultBuilder();
-            
-            return host;
-        }
         static void ConfigureServices()
         {
             var services = new ServiceCollection();
-            services.AddScoped<PatientsForm>();
+            services.AddScoped<PatientsBrowser>();
+            services.AddScoped<PatientForm>();
             
             ServiceProvider = services.BuildServiceProvider();
         }

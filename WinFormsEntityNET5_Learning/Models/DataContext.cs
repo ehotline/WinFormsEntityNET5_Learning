@@ -36,10 +36,10 @@ namespace WinFormsEntityNET5_Learning.Models
             });
             modelBuilder.Entity<Patient>().HasData(new Patient[]
             {
-                new Patient { Id = 1, FirstName = "Сергей", LastName = "Иванов" },
-                new Patient { Id = 2, FirstName = "Андрей", LastName = "Петров" },
+                new Patient { Id = 1, FirstName = "Сергей", LastName = "Иванов", Age = 25 },
+                new Patient { Id = 2, FirstName = "Андрей", LastName = "Петров", Age = 43 },
                 new Patient { Id = 3, FirstName = "Виталий", LastName = "Пугачёв" },
-                new Patient { Id = 4, FirstName = "Ирина", LastName = "Романова" }
+                new Patient { Id = 4, FirstName = "Ирина", LastName = "Романова", Age = 34 }
             });
             #endregion
             base.OnModelCreating(modelBuilder);

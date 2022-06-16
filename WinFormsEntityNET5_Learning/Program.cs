@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using WinFormsEntityNET5_Learning.Models;
 using WinFormsEntityNET5_Learning.Views;
 
 namespace WinFormsEntityNET5_Learning
@@ -29,6 +30,14 @@ namespace WinFormsEntityNET5_Learning
             var services = new ServiceCollection();
             services.AddScoped<PatientsBrowser>();
             services.AddScoped<PatientForm>();
+            //services.AddScoped<Func<PatientForm, int>>((provider) =>
+            //{
+            //    return new Func<PatientForm, int>(
+            //        (patientId) => new PatientForm(patientId)
+            //    );
+            //});
+
+            services.AddScoped<DataContext>();
             
             ServiceProvider = services.BuildServiceProvider();
         }

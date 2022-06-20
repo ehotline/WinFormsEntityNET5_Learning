@@ -10,18 +10,15 @@ namespace WinFormsEntityNET5_Learning.Models
 {
     public class DataContext : DbContext
     {
+        public DataContext(DbContextOptions options) : base(options)
+        {
+            //Database.EnsureDeleted();
+            //Database.EnsureCreated();
+        }
+
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Study> Studies { get; set; }
-        public DataContext()
-        {
-            Database.EnsureDeleted();
-            Database.EnsureCreated();
-        }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseNpgsql(ConfigurationManager.ConnectionStrings["PSQL"].ConnectionString);
-            //optionsBuilder.UseSqlServer(ConfigurationManager.ConnectionStrings["LocalDb"].ConnectionString);
-        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             #region Данные для таблиц

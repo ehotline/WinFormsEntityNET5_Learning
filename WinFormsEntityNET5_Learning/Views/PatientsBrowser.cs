@@ -1,46 +1,45 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using WinFormsEntityNET5_Learning.Models;
+using WinFormsEntityNET5_Learning.Services;
 
 namespace WinFormsEntityNET5_Learning.Views
 {
     public partial class PatientsBrowser : Form
     {
-        DataContext m_Context;
+        private IPatientRepo _patientRepo;
+
         List<Patient> m_Patients
         {
             get
             {
-                return m_Context.Patients.OrderBy(p => p.Id).ToList();
+                return _patientRepo.GetPatients();
             }
         }
         Patient? m_SelectedPatient
         {
             get { return null != PatientsDGV.CurrentRow ? (Patient)PatientsDGV.CurrentRow.DataBoundItem : null; }
         }
-        public PatientsBrowser(DataContext context)
+        public PatientsBrowser(IPatientRepo patientRepo)
         {
-            m_Context = context;
-            m_Context.Patients.Load();
+            _patientRepo = patientRepo;
+
             InitializeComponent();
             PatientsDGV.DataSource = m_Patients;
         }
 
         private void OpenPatientWindow(PatientFormMode mode)
         {
-            var patientForm = new PatientForm(m_Context, mode, m_SelectedPatient?.Id);
-            
+            /*
+             * Аналогично со второй формой через repo
+             * 
+            var patientForm = new PatientForm(_contextFactory, mode, m_SelectedPatient?.Id);
+
             patientForm.ShowDialog();
-            switch(mode)
+            switch (mode)
             {
                 case PatientFormMode.Edit:
                     RefreshPatientsDGV(m_SelectedPatient?.Id);
@@ -49,6 +48,7 @@ namespace WinFormsEntityNET5_Learning.Views
                     RefreshPatientsDGV(null);
                     break;
             }
+            */
         }
         private void RefreshPatientsDGV(int? selectedId)
         {
@@ -75,8 +75,9 @@ namespace WinFormsEntityNET5_Learning.Views
         {
             if (null == m_SelectedPatient) return;
             int selectedId = m_SelectedPatient.Id;
-            m_Context.Patients.Remove(m_SelectedPatient);
-            m_Context.SaveChanges();
+
+            _patientRepo.DeletePatient(m_SelectedPatient);
+
             RefreshPatientsDGV(selectedId + 1);
         }
 

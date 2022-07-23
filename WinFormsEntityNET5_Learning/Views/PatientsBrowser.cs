@@ -12,14 +12,14 @@ namespace WinFormsEntityNET5_Learning.Views
     {
         private IPatientRepo _patientRepo;
 
-        List<Patient> m_Patients
+        List<Patient> patients
         {
             get
             {
                 return _patientRepo.GetPatients();
             }
         }
-        Patient? m_SelectedPatient
+        Patient? selectedPatient
         {
             get { return null != PatientsDGV.CurrentRow ? (Patient)PatientsDGV.CurrentRow.DataBoundItem : null; }
         }
@@ -28,32 +28,28 @@ namespace WinFormsEntityNET5_Learning.Views
             _patientRepo = patientRepo;
 
             InitializeComponent();
-            PatientsDGV.DataSource = m_Patients;
+            PatientsDGV.DataSource = patients;
         }
 
         private void OpenPatientWindow(PatientFormMode mode)
         {
-            /*
-             * Аналогично со второй формой через repo
-             * 
-            var patientForm = new PatientForm(_contextFactory, mode, m_SelectedPatient?.Id);
+            var patientForm = new PatientForm(_patientRepo, mode, selectedPatient?.Id);
 
             patientForm.ShowDialog();
             switch (mode)
             {
                 case PatientFormMode.Edit:
-                    RefreshPatientsDGV(m_SelectedPatient?.Id);
+                    RefreshPatientsDGV(selectedPatient?.Id);
                     break;
                 case PatientFormMode.Create:
                     RefreshPatientsDGV(null);
                     break;
             }
-            */
         }
         private void RefreshPatientsDGV(int? selectedId)
         {
             PatientsDGV.DataSource = null;
-            PatientsDGV.DataSource = m_Patients;
+            PatientsDGV.DataSource = patients;
             //Сохраняем выбранную строку после перезагрузки данных
             if (null != selectedId)
             {
@@ -73,10 +69,10 @@ namespace WinFormsEntityNET5_Learning.Views
         }
         private void DeletePatient()
         {
-            if (null == m_SelectedPatient) return;
-            int selectedId = m_SelectedPatient.Id;
+            if (null == selectedPatient) return;
+            int selectedId = selectedPatient.Id;
 
-            _patientRepo.DeletePatient(m_SelectedPatient);
+            _patientRepo.DeletePatient(selectedPatient);
 
             RefreshPatientsDGV(selectedId + 1);
         }

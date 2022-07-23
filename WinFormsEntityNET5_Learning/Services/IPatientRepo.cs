@@ -5,7 +5,10 @@ namespace WinFormsEntityNET5_Learning.Services
 {
     public interface IPatientRepo
     {
-        void DeletePatient(Patient patient);
         List<Patient> GetPatients();
+        Patient GetPatient(int patientId);
+        void AddPatient(Patient patient);
+        void UpdatePatient(Patient patient);
+        void DeletePatient(Patient patient);
     }
 }

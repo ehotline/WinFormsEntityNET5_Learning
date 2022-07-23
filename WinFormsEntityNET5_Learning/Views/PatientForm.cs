@@ -8,14 +8,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WinFormsEntityNET5_Learning.Models;
+using WinFormsEntityNET5_Learning.Services;
 
 namespace WinFormsEntityNET5_Learning.Views
 {
     public partial class PatientForm : Form
     {
-        //DataContext m_Context;
-        Patient m_Patient;
-        PatientFormMode m_Mode;
+        IPatientRepo _patientRepo;
+        Patient patient;
+        PatientFormMode _mode;
         bool m_ResetBtnVisibility
         {
             set
@@ -23,42 +24,40 @@ namespace WinFormsEntityNET5_Learning.Views
                 ResetBtn.Visible = value;
             }
         }
-        public PatientForm(PatientFormMode mode, int? patientId)//DataContext context, )
+        public PatientForm(IPatientRepo patientRepo, PatientFormMode mode, int? patientId)
         {
-            //m_Context = context;
-            m_Mode = mode;
+            _patientRepo = patientRepo;
+            _mode = mode;
             InitializeComponent();
             if (mode == PatientFormMode.Edit && null != patientId)
             {
-                //m_Patient = m_Context.Patients.Find(patientId);
+                patient = _patientRepo.GetPatient((int)patientId);
                 m_ResetBtnVisibility = true;
             }
             else
             {
-                m_Patient = new Patient();
+                patient = new Patient();
                 m_ResetBtnVisibility = false;
             }
-            PatientBindingSource.DataSource = m_Patient;
-        }
-
-        private void PatientForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            //m_Context.SaveChanges();
+            PatientBindingSource.DataSource = patient;
         }
 
         private void OkBtn_Click(object sender, EventArgs e)
         {
-            if (m_Mode == PatientFormMode.Create)
+            if (_mode == PatientFormMode.Create)
             {
-               // m_Context.Patients.Add(m_Patient);
-                //m_Context.SaveChanges();
+                _patientRepo.AddPatient(patient);
+            }
+            else if (_mode == PatientFormMode.Edit)
+            {
+                _patientRepo.UpdatePatient(patient);
             }
             this.Close();
         }
 
         private void ResetBtn_Click(object sender, EventArgs e)
         {
-            //m_Patient = m_Context.Patients.Find(m_Patient.Id);
+            patient = _patientRepo.GetPatient(patient.Id);
         }
     }
 }

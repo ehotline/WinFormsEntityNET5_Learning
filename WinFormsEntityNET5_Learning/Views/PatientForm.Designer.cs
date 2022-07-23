@@ -181,7 +181,6 @@
             this.Name = "PatientForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Пациент";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PatientForm_FormClosing);
             this.MainLayout.ResumeLayout(false);
             this.MainLayout.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PatientBindingSource)).EndInit();

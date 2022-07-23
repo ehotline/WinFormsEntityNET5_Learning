@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace WinFormsEntityNET5_Learning.Models
 {
-    public class Study
+    public class Sequence
     {
         public int Id { get; set; }
-        public int PatientId { get; set; }
-        public Patient Patient { get; set; }
-        public DateTime? StudyDate { get; set; }
-        public List<Serie> Series { get; set; }
+        public int ProtocolId { get; set; }
+        public Protocol Protocol { get; set; }
     }
 }

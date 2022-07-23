@@ -21,6 +21,23 @@ namespace WinFormsEntityNET5_Learning.Services
             return db.Patients.OrderBy(p => p.Id).ToList();
         }
 
+        public Patient GetPatient(int patientId)
+        {
+            using var db = _contextFactory.CreateDbContext();
+            return db.Patients.Find(patientId);
+        }
+        public void AddPatient(Patient patient)
+        {
+            using var db = _contextFactory.CreateDbContext();
+            db.Add(patient);
+            db.SaveChanges();
+        }
+        public void UpdatePatient(Patient patient)
+        {
+            using var db = _contextFactory.CreateDbContext();
+            db.Update(patient);
+            db.SaveChanges();
+        }
         public void DeletePatient(Patient deletingPatient)
         {
             using var db = _contextFactory.CreateDbContext();
